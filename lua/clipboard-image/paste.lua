@@ -22,11 +22,13 @@ M.paste_img = function(opts)
     local conf_toload = conf_utils.get_usable_config()
     conf_toload = conf_utils.merge_config(conf_toload, opts)
 
+    local base_dir = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
     local conf = conf_utils.load_config(conf_toload)
-    local path = utils.get_img_path(conf.img_dir, conf.img_name)
+    local img_dir = string.format("%s/%s", base_dir, conf.img_dir)
+    local path = utils.get_img_path(img_dir, conf.img_name)
     local path_txt = utils.get_img_path(conf.img_dir_txt, conf.img_name, "txt")
 
-    utils.create_dir(conf.img_dir)
+    utils.create_dir(img_dir)
     paste_img_to(path)
 
     utils.insert_txt(conf.affix, path_txt)
